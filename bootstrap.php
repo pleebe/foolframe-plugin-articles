@@ -19,7 +19,8 @@ class HHVM_Articles
                 $autoloader->addClassMap([
                     'Foolz\FoolFrame\Plugins\Articles\Model\Articles' => __DIR__ . '/classes/model/articles.php',
                     'Foolz\FoolFrame\Controller\Admin\Articles' => __DIR__ . '/classes/controller/admin.php',
-                    'Foolz\FoolFuuka\Controller\Chan\Articles' => __DIR__ . '/classes/controller/chan.php'
+                    'Foolz\FoolFuuka\Controller\Chan\Articles' => __DIR__ . '/classes/controller/chan.php',
+                    'Foolz\FoolFuuka\Controller\Api\Articles' => __DIR__ . '/classes/controller/api/chan.php'
                 ]);
 
                 $context->getContainer()
@@ -73,8 +74,14 @@ class HHVM_Articles
                                 [
                                     '_suffix' => '.*'
                                 ]
-                            )
-                        );
+                            ));
+                        $context->getRouteCollection()->add(
+                            'foolframe.plugin.articles.api.chan', new \Symfony\Component\Routing\Route(
+                                '/_/api/chan/articles/',
+                                [
+                                    '_controller' => '\Foolz\FoolFuuka\Controller\Api\Articles::articles'
+                                ]
+                            ));
 
                         Event::forge('foolframe.themes.generic_top_nav_buttons')
                             ->setCall(function ($result) use ($context) {
